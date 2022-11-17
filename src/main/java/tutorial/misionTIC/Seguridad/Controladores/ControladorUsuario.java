@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import tutorial.misionTIC.Seguridad.Repositorios.RepositorioRol;
 import tutorial.misionTIC.Seguridad.Repositorios.RepositorioUsuario;
 import tutorial.misionTIC.Seguridad.Modelos.Usuario;
+import tutorial.misionTIC.Seguridad.Modelos.Rol;
 
 @CrossOrigin
 @RestController
@@ -17,6 +20,8 @@ public class ControladorUsuario {
 
     @Autowired
     private RepositorioUsuario miRepositorioUsuario;
+    @Autowired
+    private RepositorioRol miRepositorioRol;
 
     @GetMapping("")
     public List<Usuario> index(){
@@ -39,7 +44,7 @@ public class ControladorUsuario {
     }
 
     @PutMapping("{id}")
-    public Usuario update(@PathVariable String id,@RequestBody Usuario infoUsuario){
+    public Usuario update(@PathVariable String id, @RequestBody Usuario infoUsuario){
         Usuario usuarioActual=this.miRepositorioUsuario
                 .findById(id)
                 .orElse(null);
@@ -61,6 +66,28 @@ public class ControladorUsuario {
                 .orElse(null);
         if (usuarioActual!=null){
             this.miRepositorioUsuario.delete(usuarioActual);
+        }
+    }
+
+    /**
+     * Relación (1 a n) entre rol y usuario
+     * @param id
+     * @param id_rol
+     * @return
+     */
+    @PutMapping("{id}/rol/{id_rol}")
+    public Usuario asignarRolAUsuario(@PathVariable String id,@PathVariable String id_rol) {
+        Usuario usuarioActual = this.miRepositorioUsuario
+                .findById(id)
+                .orElse(null);
+        Rol rolActual = this.miRepositorioRol
+                .findById(id_rol)
+                .orElse(null);
+        if (usuarioActual != null && rolActual != null) {
+            usuarioActual.setRol(rolActual);
+            return this.miRepositorioUsuario.save(usuarioActual);
+        } else {
+            return null;
         }
     }
 

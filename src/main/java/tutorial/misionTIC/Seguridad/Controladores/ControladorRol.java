@@ -1,20 +1,22 @@
-package tutorial.misionTIC.ModuloSeguridad.Controladores;
+package tutorial.misionTIC.Seguridad.Controladores;
+
+import tutorial.misionTIC.Seguridad.Modelos.Rol;
+import tutorial.misionTIC.Seguridad.Repositorios.RepositorioRol;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import tutorial.misionTIC.ModuloSeguridad.Modelos.Rol;
-import tutorial.misionTIC.ModuloSeguridad.Repositorios.RepositorioRol;
 
 import java.util.List;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/roles")
+
 public class ControladorRol {
+
     @Autowired
     private RepositorioRol miRepositorioRol;
-
 
     @GetMapping("")
     public List<Rol> index(){
@@ -23,9 +25,10 @@ public class ControladorRol {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Rol create(@RequestBody  Rol infoRol){
+    public Rol create(@RequestBody Rol infoRol){
         return this.miRepositorioRol.save(infoRol);
     }
+
     @GetMapping("{id}")
     public Rol show(@PathVariable String id){
         Rol rolActual=this.miRepositorioRol
@@ -33,8 +36,9 @@ public class ControladorRol {
                 .orElse(null);
         return rolActual;
     }
+
     @PutMapping("{id}")
-    public Rol update(@PathVariable String id,@RequestBody  Rol infoRol){
+    public Rol update(@PathVariable String id, @RequestBody Rol infoRol){
         Rol rolActual=this.miRepositorioRol
                 .findById(id)
                 .orElse(null);
@@ -42,9 +46,10 @@ public class ControladorRol {
             rolActual.setNombre(infoRol.getNombre());
             return this.miRepositorioRol.save(rolActual);
         }else{
-            return  null;
+            return null;
         }
     }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{id}")
     public void delete(@PathVariable String id){
