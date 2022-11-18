@@ -9,11 +9,11 @@ public class Permiso {
 
     @Id
     private String Id;
-    private String URL;
+    private String url;
     private String metodo;
 
     public Permiso(String URL, String metodo) {
-        this.URL = URL;
+        this.url = url;
         this.metodo = metodo;
     }
 
@@ -21,9 +21,9 @@ public class Permiso {
     public String getId() {
         return Id;
     }
-    public String getURL() {return URL;}
-    public void setURL(String URL) {
-        this.URL = URL;
+    public String getURL() {return url;}
+    public void setURL(String url) {
+        this.url = url;
     }
     public String getMetodo() {
         return metodo;

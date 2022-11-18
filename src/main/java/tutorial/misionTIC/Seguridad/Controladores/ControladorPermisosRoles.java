@@ -5,11 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import tutorial.misionTIC.Seguridad.Modelos.Permiso;
-import tutorial.misionTIC.Seguridad.Modelos.PermisosRoles;
-import tutorial.misionTIC.Seguridad.Modelos.Rol;
-
 import tutorial.misionTIC.Seguridad.Repositorios.RepositorioPermiso;
+import tutorial.misionTIC.Seguridad.Modelos.PermisosRoles;
 import tutorial.misionTIC.Seguridad.Repositorios.RepositorioPermisosRoles;
+import tutorial.misionTIC.Seguridad.Modelos.Rol;
 import tutorial.misionTIC.Seguridad.Repositorios.RepositorioRol;
 
 import java.util.List;
@@ -94,6 +93,20 @@ public class ControladorPermisosRoles {
                 .orElse(null);
         if (permisosRolesActual!=null){
             this.miRepositorioPermisosRoles.delete(permisosRolesActual);
+        }
+    }
+
+    @GetMapping("validar-permiso/rol/{id_rol}")
+    public PermisosRoles getPermiso(@PathVariable String id_rol,
+                                    @RequestBody Permiso infoPermiso){
+        Permiso elPermiso=this.miRepositorioPermiso
+                .getPermiso(infoPermiso.getURL(),
+                        infoPermiso.getMetodo());
+        Rol elRol=this.miRepositorioRol.findById(id_rol).get();
+        if (elPermiso!=null && elRol!=null){
+            return this.miRepositorioPermisosRoles.getPermisoRol(elRol.getId(),elPermiso.getId());
+        }else{
+            return null;
         }
     }
 }

@@ -10,19 +10,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 public class Usuario {
 
-    @DBRef
-    private Rol rol;
+
     @Id
     private String Id;
     private String seudonimo;
     private String correo;
     private String contrasena;
+    @DBRef
+    private Rol rol;
 
     public Usuario(String seudonimo, String correo, String contrasena) {
         this.seudonimo = seudonimo;
         this.correo = correo;
         this.contrasena = contrasena;
     }
+
+
 
     public String getId() {
         return Id;
